@@ -1,15 +1,14 @@
-import { render } from "./react.js";
+import { Subject } from "./core/Subject.js";
+import { TodoList } from "./components/TodoList.js";
 
-import App from "./components/App.js";
+const todoList = new TodoList(
+    {
+        todos: new Subject([
+            { id: 1, title: "купить хлеб", active: true },
+            { id: 2, title: "купить пиво", active: true },
+        ]),
+    },
+    document.getElementById("root")
+);
 
-let count = 0;
-function renderComponent() {
-    render(App, { count }, document.getElementById("root"));
-}
-
-renderComponent();
-
-document.getElementById("increment").addEventListener("click", () => {
-    count++;
-    renderComponent();
-});
+todoList.render();
