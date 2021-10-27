@@ -8,17 +8,17 @@ import {
 function Counter({ count }) {
     const value = useSubject(10);
 
-    const handler = (newValue) => {
-        console.log(newValue);
-        render(Counter, { count }, null);
-    };
-
     console.log("render Counter");
 
     useRendered((el) => {
         el.querySelector("#add").addEventListener("click", () => {
             value.next(value.value + 1);
         });
+
+        const handler = (newValue) => {
+            console.log(newValue);
+            render(Counter, { count }, el);
+        };
 
         value.subscribe(handler);
 
@@ -42,6 +42,8 @@ let count = 0;
 document.getElementById("increment").addEventListener("click", () => {
     count++;
     render(Counter, { count }, document.getElementById("root"));
+    render(Counter, { count }, document.getElementById("root-2"));
 });
 
 render(Counter, { count }, document.getElementById("root"));
+render(Counter, { count }, document.getElementById("root-2"));
