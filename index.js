@@ -12,6 +12,8 @@ function Counter({ count }) {
         console.log(newValue);
     };
 
+    console.log("render Counter");
+
     useRendered((el) => {
         el.querySelector("#add").addEventListener("click", () => {
             value.next(value.value + 1);
@@ -21,6 +23,7 @@ function Counter({ count }) {
 
         return () => {
             console.log("unsubscribe");
+            value.unsubscribe(handler);
         };
     });
 

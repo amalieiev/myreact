@@ -1,13 +1,20 @@
 let globalParent;
 let globalId = 0;
 const callbacks = new Map();
+const rollbacks = new Map();
 const states = new Map();
 
 export function render(component, props, parent) {
     const state = states.get(parent);
+    const rollback = rollbacks.get(parent);
+
     states.set(parent, state ? state : []);
 
     globalParent = parent;
+
+    if (rollback) {
+        rollback();
+    }
 
     const HTML = component(props);
 
@@ -15,7 +22,10 @@ export function render(component, props, parent) {
 
     const callback = callbacks.get(parent);
 
-    if (callback) callback(parent);
+    if (callback) {
+        const rollback = callback(parent);
+        rollbacks.set(parent, rollback);
+    }
 
     globalId = 0;
 }
@@ -26,6 +36,9 @@ export function createSubject(initialValue) {
         callbacks: [],
         subscribe(callback) {
             this.callbacks.push(callback);
+        },
+        unsubscribe(callback) {
+            this.callbacks = this.callbacks.filter((item) => item !== callback);
         },
         next(value) {
             this.value = value;
