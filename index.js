@@ -15,6 +15,10 @@ function Counter({ count }) {
             value.next(value.value + 1);
         });
 
+        el.querySelector("#remove").addEventListener("click", () => {
+            value.next(value.value - 1);
+        });
+
         const handler = (newValue) => {
             console.log(newValue);
             render(Counter, { count }, el);
