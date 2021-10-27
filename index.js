@@ -10,6 +10,7 @@ function Counter({ count }) {
 
     const handler = (newValue) => {
         console.log(newValue);
+        render(Counter, { count }, null);
     };
 
     console.log("render Counter");

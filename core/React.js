@@ -5,6 +5,11 @@ const rollbacks = new Map();
 const states = new Map();
 
 export function render(component, props, parent) {
+    if (!parent) {
+        console.log(globalParent);
+        parent = globalParent;
+    }
+
     const state = states.get(parent);
     const rollback = rollbacks.get(parent);
 
