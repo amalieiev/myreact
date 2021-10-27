@@ -1,19 +1,32 @@
-import { useState, render, useEffect } from "./core/React.js";
+import {
+    createSubject,
+    render,
+    useRendered,
+    useSubject,
+} from "./core/React.js";
 
 function Counter({ count }) {
-    const [value, setValue] = useState(1);
-    const [name, setName] = useState("Artem");
+    const value = useSubject(10);
 
-    useEffect(() => {
-        document.getElementById("add").addEventListener("click", () => {
-            setValue(value + 1);
+    const handler = (newValue) => {
+        console.log(newValue);
+    };
+
+    useRendered((el) => {
+        el.querySelector("#add").addEventListener("click", () => {
+            value.next(value.value + 1);
         });
-    }, []);
+
+        value.subscribe(handler);
+
+        return () => {
+            console.log("unsubscribe");
+        };
+    });
 
     return `
         <h3>Counter</h3>
-        <p>State: ${value}</p>
-        <p>Name: ${name}</p>
+        <p>State: ${value.value}</p>
         <p>Props <strong>count</strong>: ${count}</p>
         <button id="add">+</button>
         <button id="remove">-</button>

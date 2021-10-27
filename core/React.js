@@ -1,15 +1,11 @@
-let globalId = 0;
 let globalParent;
-const componentState = new Map();
+let globalId = 0;
+const callbacks = new Map();
+const states = new Map();
 
 export function render(component, props, parent) {
-    const state = componentState.get(parent);
-
-    componentState.set(parent, {
-        cache: state ? state.cache : [],
-        component,
-        props,
-    });
+    const state = states.get(parent);
+    states.set(parent, state ? state : []);
 
     globalParent = parent;
 
@@ -17,52 +13,43 @@ export function render(component, props, parent) {
 
     parent.innerHTML = HTML;
 
+    const callback = callbacks.get(parent);
+
+    if (callback) callback(parent);
+
     globalId = 0;
 }
 
-export function useState(initialValue) {
+export function createSubject(initialValue) {
+    return {
+        value: initialValue,
+        callbacks: [],
+        subscribe(callback) {
+            this.callbacks.push(callback);
+        },
+        next(value) {
+            this.value = value;
+            this.callbacks.forEach((callback) => callback(value));
+        },
+    };
+}
+
+export function useSubject(initialValue) {
     return ((id, parent) => {
-        const { cache } = componentState.get(parent);
+        const state = states.get(parent);
 
-        if (cache[id] === undefined) {
-            cache[id] = {
-                value: initialValue,
-            };
+        if (state[id] === undefined) {
+            state[id] = createSubject(initialValue);
         }
-
-        const setState = (value) => {
-            const { cache, component, props } = componentState.get(parent);
-
-            cache[id].value = value;
-
-            render(component, props, parent);
-        };
 
         globalId++;
 
-        return [cache[id].value, setState];
+        return state[id];
     })(globalId, globalParent);
 }
 
-export function useEffect(callback, dependencies) {
-    return ((id, parent) => {
-        const { component, cache, props } = componentState.get(parent);
-
-        if (cache[id] === undefined) {
-            cache[id] = {
-                dependencies: dependencies,
-            };
-        }
-
-        const dependenciesChanged =
-            dependencies === undefined ||
-            dependencies.some((dependency, index) => {
-                return cache[id].dependencies[index] !== dependency;
-            });
-
-        if (dependenciesChanged) {
-            callback();
-            render(component, props, parent);
-        }
-    })(globalId, globalParent);
+export function useRendered(callback) {
+    return ((parent) => {
+        callbacks.set(parent, callback);
+    })(globalParent);
 }
