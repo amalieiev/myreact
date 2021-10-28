@@ -32,7 +32,7 @@ module.exports = async (env, options) => {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        to: "[name].[ext]",
+                        to: "[name][ext]",
                         from: "manifest.xml",
                         transform(content) {
                             return content
@@ -44,8 +44,7 @@ module.exports = async (env, options) => {
                         },
                     },
                     {
-                        from: "./assets",
-                        to: "assets",
+                        from: "./public",
                         force: true,
                     },
                 ],
