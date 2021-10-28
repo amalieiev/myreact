@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should render input element 1`] = `<div />`;
+exports[`examples of some things 1`] = `
+<div>
+  <span>
+    Print Username
+  </span>
+</div>
+`;
+
+exports[`examples of some things 2`] = `
+<div>
+  <button>
+    Success
+  </button>
+</div>
+`;
