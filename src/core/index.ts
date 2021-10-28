@@ -40,8 +40,6 @@ export function createSubject<T>(initialValue: T): Subject<T> {
 }
 
 export function render(component: FC, props: any, parent: HTMLElement): void {
-    console.log(parent);
-
     const state = states.get(parent);
     const rollback = rollbacks.get(parent);
 
@@ -54,8 +52,6 @@ export function render(component: FC, props: any, parent: HTMLElement): void {
     }
 
     const HTML = component(props);
-
-    console.log(HTML);
 
     parent.innerHTML = HTML;
 
