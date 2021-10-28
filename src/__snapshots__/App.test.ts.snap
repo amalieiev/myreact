@@ -22,7 +22,11 @@ exports[`testing App component 1`] = `
         
   <p
     data-testid="output"
-  />
+  >
+    <p>
+      Hello
+    </p>
+  </p>
   
     
 </div>

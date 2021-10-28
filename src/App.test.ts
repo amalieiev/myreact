@@ -26,13 +26,13 @@ test("testing App component", async () => {
 
     const input = getByLabelText(container, /Type Text/);
 
-    userEvent.type(input, "Hello World");
+    // userEvent.type(input, "Hello World");
 
-    // fireEvent.keyUp(input, { target: { value: "H" } });
-    // fireEvent.keyUp(input, { target: { value: "He" } });
-    // fireEvent.keyUp(input, { target: { value: "Hel" } });
-    // fireEvent.keyUp(input, { target: { value: "Hell" } });
-    // fireEvent.keyUp(input, { target: { value: "Hello" } });
+    fireEvent.keyUp(input, { target: { value: "H" } });
+    fireEvent.keyUp(input, { target: { value: "He" } });
+    fireEvent.keyUp(input, { target: { value: "Hel" } });
+    fireEvent.keyUp(input, { target: { value: "Hell" } });
+    fireEvent.keyUp(input, { target: { value: "Hello" } });
 
     // setTimeout(() => {
     //     container.querySelector("p").innerHTML = "Hello World";
