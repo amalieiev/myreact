@@ -1,7 +1,7 @@
 let globalParent: HTMLElement;
 let globalId: number = 0;
-const callbacks = new Map<HTMLElement, () => () => void>();
-const rollbacks = new Map<HTMLElement, () => void>();
+const callbacks = new Map<HTMLElement, void | (() => void)>();
+const rollbacks = new Map<HTMLElement, void | (() => void)>();
 const states = new Map<HTMLElement, Array<Subject<any>>>();
 
 export type FC = (props: Record<string, any>) => string;
@@ -40,6 +40,8 @@ export function createSubject<T>(initialValue: T): Subject<T> {
 }
 
 export function render(component: FC, props: any, parent: HTMLElement): void {
+    console.log(parent);
+
     const state = states.get(parent);
     const rollback = rollbacks.get(parent);
 
@@ -52,6 +54,8 @@ export function render(component: FC, props: any, parent: HTMLElement): void {
     }
 
     const HTML = component(props);
+
+    console.log(HTML);
 
     parent.innerHTML = HTML;
 
@@ -84,7 +88,7 @@ export function useParent(): HTMLElement {
     })(globalParent);
 }
 
-export function useRendered(callback: () => () => void): void {
+export function useRendered(callback: () => void | (() => void)): void {
     return ((parent: HTMLElement): void => {
         callbacks.set(parent, callback);
     })(globalParent);

@@ -1,6 +1,6 @@
 import { FC, HTMLElementEvent, render, useParent, useRendered, useSubject } from "./core";
 
-const App: FC = () => {
+export const App: FC = () => {
     const el = useParent();
     const title = useSubject("");
 
@@ -9,13 +9,14 @@ const App: FC = () => {
             title.next(event.target.value);
             el.querySelector("p").innerHTML = `<p>${title.value}</p>`;
         });
-
-        return () => {};
     });
 
     return `
-        <input type="text" value="${title.value}" />
-        <p>${title.value}</p>
+        <label for="username">
+            <input type="text" value="${title.value}" />
+            Type Text
+        </label>
+        <p data-testid="output">${title.value}</p>
     `;
 };
 
