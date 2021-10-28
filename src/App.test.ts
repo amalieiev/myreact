@@ -5,6 +5,7 @@ import {
     getByText,
     getByTestId,
     queryByTestId,
+    fireEvent,
     queries,
     waitFor,
     queryByText,
@@ -27,9 +28,17 @@ test("testing App component", async () => {
 
     userEvent.type(input, "Hello World");
 
-    setTimeout(() => {
-        container.querySelector("p").innerHTML = "Hello World";
-    }, 100);
+    // fireEvent.keyUp(input, { target: { value: "H" } });
+    // fireEvent.keyUp(input, { target: { value: "He" } });
+    // fireEvent.keyUp(input, { target: { value: "Hel" } });
+    // fireEvent.keyUp(input, { target: { value: "Hell" } });
+    // fireEvent.keyUp(input, { target: { value: "Hello" } });
 
-    await waitFor(() => expect(queryByText(container, /Hello World/)).toBeTruthy());
+    // setTimeout(() => {
+    //     container.querySelector("p").innerHTML = "Hello World";
+    // }, 100);
+
+    expect(container).toMatchSnapshot();
+
+    await waitFor(() => expect(queryByText(container, /Hello/)).toBeTruthy());
 });

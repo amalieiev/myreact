@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing App component 1`] = `
+<div>
+  
+        
+  <label
+    for="username"
+  >
+    
+            
+    <input
+      id="username"
+      type="text"
+      value=""
+    />
+    
+            Type Text
+        
+  </label>
+  
+        
+  <p
+    data-testid="output"
+  />
+  
+    
+</div>
+`;
