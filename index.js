@@ -1,16 +1,20 @@
 import {
     createSubject,
     render,
+    useParent,
     useRendered,
     useSubject,
 } from "./core/React.js";
 
 function Counter({ count }) {
     const value = useSubject(10);
+    const inputvalue = useSubject("");
 
     console.log("render Counter");
 
     useRendered((el) => {
+        render(InputForm, { inputvalue }, el.querySelector(".input"));
+
         el.querySelector("#add").addEventListener("click", () => {
             value.next(value.value + 1);
         });
@@ -38,6 +42,29 @@ function Counter({ count }) {
         <p>Props <strong>count</strong>: ${count}</p>
         <button id="add">+</button>
         <button id="remove">-</button>
+        <div class="input"></div>
+    `;
+}
+
+function InputForm({ inputvalue }) {
+    const el = useParent();
+
+    const onChange = (event) => {
+        inputvalue.next(event.target.value);
+        el.querySelector("p").innerHTML = inputvalue.value;
+    };
+
+    useRendered((el) => {
+        el.querySelector("input").addEventListener("keyup", onChange);
+
+        return () => {
+            el.querySelector("input").removeEventListener("keyup", onChange);
+        };
+    });
+
+    return `
+        <input type="text" value="${inputvalue.value}">
+        <p>${inputvalue.value}</p>
     `;
 }
 

@@ -61,6 +61,12 @@ export function useSubject(initialValue) {
     })(globalId, globalParent);
 }
 
+export function useParent() {
+    return ((parent) => {
+        return parent;
+    })(globalParent);
+}
+
 export function useRendered(callback) {
     return ((parent) => {
         callbacks.set(parent, callback);
