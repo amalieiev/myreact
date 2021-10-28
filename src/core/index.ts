@@ -6,10 +6,14 @@ const states = new Map<HTMLElement, Array<Subject<any>>>();
 
 export type FC = (props: Record<string, any>) => string;
 
+export type HTMLElementEvent<T extends HTMLElement> = Event & {
+    target: T;
+};
+
 export class Subject<T> {
     public value: T;
 
-    private callbacks: Array<() => void>;
+    private callbacks: Array<() => void> = [];
 
     public constructor(initialValue: T) {
         this.value = initialValue;
@@ -62,9 +66,7 @@ export function render(component: FC, props: any, parent: HTMLElement): void {
 
 export function useSubject<T>(initialValue: T): Subject<T> {
     return ((id: number, parent: HTMLElement): Subject<T> => {
-        const state: Array<Subject<T>> = states.get(parent) as Array<
-            Subject<T>
-        >;
+        const state: Array<Subject<T>> = states.get(parent) as Array<Subject<T>>;
 
         if (state[id] === undefined) {
             state[id] = createSubject<T>(initialValue);

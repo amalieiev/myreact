@@ -44,7 +44,8 @@ module.exports = async (env, options) => {
                         },
                     },
                     {
-                        from: "./public",
+                        from: "./src/assets",
+                        to: "assets",
                         force: true,
                     },
                 ],
