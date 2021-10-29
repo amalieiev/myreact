@@ -8,7 +8,6 @@ function typeToInput(input, text) {
     text.split("").reduce((memo, value, index) => {
         memo += value;
         fireEvent.keyUp(input, { target: { value: memo } });
-        console.log(memo);
         return memo;
     }, "");
 
